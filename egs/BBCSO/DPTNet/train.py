@@ -10,7 +10,7 @@ import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 
 from asteroid import DPTNet
-from asteroid.engine import schedulers
+#from asteroid.engine import schedulers
 
 from asteroid.data.bbcso_dataset import BBCSODataset
 from asteroid.engine.optimizers import make_optimizer
@@ -44,7 +44,7 @@ class AugSystem(System):
                 )
             ]
         )
-        #batch = apply_augmentation(batch, sample_rate=22050)
+        batch = apply_augmentation(batch, sample_rate=22050)
         loss = self.common_step(batch, batch_nb, train=True)
         self.log("loss", loss, logger=True)
         return loss    
@@ -64,7 +64,7 @@ def main(conf):
     n_src = 4
     
     # Define Dataloader
-    train_set = BBCSODataset(
+    total_set = BBCSODataset(
         train_json,
         n_src,
         conf["data"]["sample_rate"],
@@ -72,13 +72,15 @@ def main(conf):
         conf["data"]["segment"],
         train = True
     )
+    """
     val_set = BBCSODataset(
         val_json,
         n_src,
         conf["data"]["sample_rate"],
         conf["training"]["batch_size"],
         train = True
-    )
+    )"""
+    train_set, val_set = torch.utils.data.random_split(total_set, [int(len(total_set)*0.9), len(total_set) - int(len(total_set)*0.9)])
     train_loader = data.DataLoader(
         train_set,
         shuffle=False,
@@ -98,14 +100,16 @@ def main(conf):
 
     model = DPTNet(**conf["filterbank"], **conf["masknet"], sample_rate=conf["data"]["sample_rate"])
     optimizer = make_optimizer(model.parameters(), **conf["optim"])
-    from asteroid.engine.schedulers import DPTNetScheduler
+    """from asteroid.engine.schedulers import DPTNetScheduler
 
     schedulers = {
         "scheduler": DPTNetScheduler(
             optimizer, len(train_loader) // conf["training"]["batch_size"], 64
         ),
         "interval": "step",
-    }
+    }"""
+    
+    scheduler = ReduceLROnPlateau(optimizer=optimizer, factor=0.5, patience=5)
 
     # Just after instantiating, save the args. Easy loading in the future.
     exp_dir = conf["main_args"]["exp_dir"]
@@ -120,7 +124,7 @@ def main(conf):
         model=model,
         loss_func=loss_func,
         optimizer=optimizer,
-        scheduler=schedulers,
+        scheduler=scheduler,
         train_loader=train_loader,
         val_loader=val_loader,
         config=conf,
@@ -158,7 +162,7 @@ def main(conf):
     system.cpu()
 
     to_save = system.model.serialize()
-    to_save.update(train_set.get_infos())
+    to_save.update(total_set.get_infos())
     torch.save(to_save, os.path.join(exp_dir, "best_model.pth"))
 
 

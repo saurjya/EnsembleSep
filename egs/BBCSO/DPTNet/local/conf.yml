@@ -6,14 +6,14 @@ filterbank:
 # Network config
 masknet:
   in_chan: 64
-  n_src: 4
+  n_src: 2
   out_chan: 64
   ff_hid: 256
   ff_activation: "relu"
   norm_type: "gLN"
   chunk_size: 166
   hop_size: 83
-  n_repeats: 8
+  n_repeats: 6
   mask_act: 'sigmoid'
   bidirectional: true
   dropout: 0
@@ -38,7 +38,7 @@ data:
   json_dir: data/inst2poly/wav44k
   validation_split: 0.1
   n_inst: 1
-  n_poly: 4
+  n_poly: 2
   task: sep_clean
   sample_rate: 22050
   segment: 5.0

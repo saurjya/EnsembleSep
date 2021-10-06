@@ -10,13 +10,14 @@ import pandas as pd
 from tqdm import tqdm
 from pprint import pprint
 
-from asteroid import DPTNet
+from asteroid import DCUNet
 from asteroid.metrics import get_metrics
 from asteroid.losses import PITLossWrapper, pairwise_neg_sisdr
 from asteroid.data.bbcso_dataset import BBCSODataset
-from asteroid.models import ConvTasNet
 from asteroid.utils import tensors_to_device
 from asteroid.models import save_publishable
+from asteroid.dsp.normalization import normalize_estimates
+
 
 
 parser = argparse.ArgumentParser()
@@ -41,7 +42,7 @@ compute_metrics = ["si_sdr", "sdr", "sir", "sar"]
 def main(conf):
     model_path = os.path.join(conf["exp_dir"], "best_model.pth")
     #model = ConvTasNet.from_pretrained(model_path)
-    model = DPTNet.from_pretrained(model_path)
+    model = DCUNet.from_pretrained(model_path)
     # Handle device placement
     if conf["use_gpu"]:
         model.cuda()
@@ -72,8 +73,6 @@ def main(conf):
         mix = mix.unsqueeze(0)
         sources = sources.unsqueeze(0)
         est_sources = model(mix)
-        #print(test_set[idx])
-        #print(est_sources.shape, sources.shape, mix.shape, len(test_set))
         loss, reordered_sources = loss_func(est_sources, sources, return_est=True)
         #mix_np = mix.squeeze(0).cpu().data.numpy()
         mix_np = mix.cpu().data.numpy()

@@ -9,7 +9,7 @@ import soundfile as sf
 import itertools
 
 
-def make_processed_filelist(track_list, out_path, segment):
+def make_processed_filelist(track_list, out_path, segment, poly):
     """
     Given list of audio files, generates activity confidence array
     Writes audio file path and confidence array to json file
@@ -27,7 +27,7 @@ def make_processed_filelist(track_list, out_path, segment):
     for track in track_list: 
         counter = 0
         print("Processing file", track)
-        pairs = get_sets(track,segment,hop_length=2048,N=4,threshold=0.1)
+        pairs = get_sets(track,segment,hop_length=2048,N=poly,threshold=0.1)
         if pairs:
             file_infos.extend(pairs)
         counter += 1
@@ -250,14 +250,15 @@ if __name__ == "__main__":
     """
     parser = argparse.ArgumentParser("MedleyDB data preprocessing")
     parser.add_argument(
-        "--data_path", type=str, default="/jmain01/home/JAD029/txl22/sxs01-txl22/data/BBCSO/val_test", help="Directory path of BBCSO tracks"
+        "--data_path", type=str, default="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/Renders", help="Directory path of BBCSO tracks"
     )
     
     parser.add_argument(
         "--inst_list",
         nargs="+",
         help="list of instruments",
-        default=["Violin 1", "Violin 2", "Violin 3", "Cello", "Bass.", "Viola"],
+        #default=["Violin 1", "Violin 2", "Violin 3", "Cello", "Bass.", "Viola"],
+        default=["Violin", "Viola"],
     )
     parser.add_argument(
         "--mix_list",         nargs="+",
@@ -265,7 +266,7 @@ if __name__ == "__main__":
         default=["Mono"],
     )
     parser.add_argument(
-        "--json_path", type=str, default="/jmain01/home/JAD029/txl22/sxs01-txl22/data/BBCSO/val_test.json", help="Directory path for output json files"
+        "--json_path", type=str, default="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/vv2m_train.json", help="Directory path for output json files"
     )
     parser.add_argument(
         "--segment", type=int, default=220500, help="Length of segments in seconds"
@@ -283,5 +284,6 @@ if __name__ == "__main__":
         tracklist, 
         args.json_path,
         args.segment,
+        poly=2
     )
     
