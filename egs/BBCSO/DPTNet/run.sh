@@ -3,9 +3,9 @@ set -e  # Exit on error
 
 #if starting from stage 0
 # Destination to save json files with list of track locations for instrument sets
-train_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/train_mono.json"
+train_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/train_strings5.json"
 val_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/val_mono.json"
-test_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/test_mono.json"
+test_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/test_strings5.json"
 # Location for tracklist for all data dirs
 tracklist=  # Directory containing tracklists for V1, V2, Bach10 and others
 
@@ -40,7 +40,7 @@ python_path=python
 
 # General
 stage=3  # Controls from which stage to start
-tag="BBCSO_new_2sep_6r_16f_violinviola1only"  # Controls the directory name associated to the experiment
+tag="BBCSO_new_2sep_6r_16f_strings"  # Controls the directory name associated to the experiment
 # You can ask for several GPUs using id (passed to CUDA_VISIBLE_DEVICES)
 id=$CUDA_VISIBLE_DEVICES
 echo $CUDA_VISIBLE_DEVICES
@@ -50,12 +50,12 @@ sample_rate=22050
 n_src=2
 segment=220500
 # Training
-batch_size=4
+batch_size=3
 #num_workers=10
 optimizer=adam
 #lr=0.0005
 #weight_decay=0.0
-epochs=200
+epochs=180
 #loss_alpha=1.0  # DC loss weight : 1.0 => DC, <1.0 => Chimera
 take_log=true  # Whether to input log mag spec to the NN
 

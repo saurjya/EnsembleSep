@@ -7,12 +7,12 @@
 #SBATCH -J bbcso_close
 #SBATCH --partition=big
 # set number of GPUs
-#SBATCH --gres=gpu:8
+#SBATCH --gres=gpu:4
 # load the anaconda module
 #module load python3/anaconda
 # if you need the custom conda environment:
 #source activate custom
-source activate asteroid2
+source activate asteroid5
 which python
 echo $CUDA_VISIBLE_DEVICES
 #nvidia-smi
