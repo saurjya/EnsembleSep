@@ -27,7 +27,7 @@ def make_processed_filelist(track_list, out_path, segment, poly):
     for track in track_list: 
         counter = 0
         print("Processing file", track)
-        pairs = get_sets(track,segment,hop_length=2048,N=poly,threshold=0.1)
+        pairs = get_sets(track,segment,hop_length=2048,N=poly,threshold=0.4)
         if pairs:
             file_infos.extend(pairs)
         counter += 1
@@ -250,15 +250,16 @@ if __name__ == "__main__":
     """
     parser = argparse.ArgumentParser("MedleyDB data preprocessing")
     parser.add_argument(
-        "--data_path", type=str, default="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/Renders", help="Directory path of BBCSO tracks"
+        "--data_path", type=str, default="/data/EECS-Sandler-Lab/BBCSO/New_Renders", help="Directory path of BBCSO tracks"
     )
     
     parser.add_argument(
         "--inst_list",
         nargs="+",
         help="list of instruments",
-        #default=["Violin 1", "Violin 2", "Violin 3", "Cello", "Bass.", "Viola"],
-        default=["Violin", "Viola"],
+        #default=["Violin", "Viola", "Cello", "Bass 1", "Bass 2", "Bass 3", "Bass."],
+        default=["Violin", "Viola", "Flute", "Oboe", "Trumpet", "Clarinet", "French Horn", "Trombone"],
+        #default=["Violin", "Viola"],
     )
     parser.add_argument(
         "--mix_list",         nargs="+",
@@ -266,7 +267,7 @@ if __name__ == "__main__":
         default=["Mono"],
     )
     parser.add_argument(
-        "--json_path", type=str, default="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/vv2m_train.json", help="Directory path for output json files"
+        "--json_path", type=str, default="/data/EECS-Sandler-Lab/BBCSO/all_t4_2src_train.json", help="Directory path for output json files"
     )
     parser.add_argument(
         "--segment", type=int, default=220500, help="Length of segments in seconds"

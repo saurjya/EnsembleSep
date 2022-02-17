@@ -2,7 +2,7 @@
 filterbank:
   n_filters: 64
   kernel_size: 16
-  stride: 8
+  stride: 4
 # Network config
 masknet:
   in_chan: 64
@@ -11,8 +11,8 @@ masknet:
   ff_hid: 256
   ff_activation: "relu"
   norm_type: "gLN"
-  chunk_size: 166
-  hop_size: 83
+  chunk_size: 332
+  hop_size: 166
   n_repeats: 6
   mask_act: 'sigmoid'
   bidirectional: true
@@ -28,7 +28,7 @@ training:
 # Optim config
 optim:
   optimizer: adam
-  lr: 0.001
+  lr: 0.0005
   weight_decay: !!float 1e-5
 scheduler:
   steps_per_epoch: 10000
@@ -40,6 +40,6 @@ data:
   n_inst: 1
   n_poly: 2
   task: sep_clean
-  sample_rate: 22050
+  sample_rate: 44100
   segment: 5.0
   threshold: 0.1
