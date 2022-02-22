@@ -18,7 +18,7 @@ python_path=python
 # ./run.sh --stage 3 --tag my_tag --loss_alpha 0.1 --id 0,1
 
 # General
-stage=3  # Controls from which stage to start
+stage=2  # Controls from which stage to start
 tag="BBCSO_new_2sep_6r_16f_strings"  # Controls the directory name associated to the experiment
 # You can ask for several GPUs using id (passed to CUDA_VISIBLE_DEVICES)
 id=$CUDA_VISIBLE_DEVICES
