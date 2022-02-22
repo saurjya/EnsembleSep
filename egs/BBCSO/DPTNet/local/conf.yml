@@ -19,7 +19,7 @@ masknet:
   dropout: 0
 # Training config
 training:
-  epochs: 200
+  epochs: 100
   batch_size: 1
   num_workers: 4
   half_lr: yes
@@ -37,9 +37,8 @@ scheduler:
 data:
   json_dir: data/inst2poly/wav44k
   validation_split: 0.1
-  n_inst: 1
-  n_poly: 2
+  n_src: 2
   task: sep_clean
   sample_rate: 44100
-  segment: 5.0
+  segment: 220500
   threshold: 0.1

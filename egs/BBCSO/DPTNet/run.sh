@@ -4,30 +4,7 @@ set -e  # Exit on error
 #if starting from stage 0
 # Destination to save json files with list of track locations for instrument sets
 train_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/train_strings5.json"
-val_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/val_mono.json"
 test_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/test_strings5.json"
-# Location for tracklist for all data dirs
-tracklist=  # Directory containing tracklists for V1, V2, Bach10 and others
-
-# Location for MedleyDB V1
-V1_dir= # Directory containing MedleyDB V1 audio files
-
-# Location for MedleyDB V2
-V2_dir= # Directory containing MedleyDB V2 audio files
-
-# Location for Bach10
-Bach10_dir=  # Directory containing MedleyDB format Bach10 audio files
-
-# Location for additional MedleyDB format multitracks
-extra_dir= # Directory containing additional MedleyDB format audio files
-
-# Location for MedleyDB format metadata files for all multitracks
-#metadata_dir=/jmain01/home/JAD007/txk02/sxs01-txk02/metadata/medleydb # Directory containing MedleyDB github repository with metadata for all files
-
-# Location for evaluation multitrack sourceFolders
-#wav_dir=/jmain01/home/JAD007/txk02/sxs01-txk02/data/fix/split_2/tt/ # Directory containing MedleyDB github repository with metadata for all files
-
-
 
 # After running the recipe a first time, you can run it from stage 3 directly to train new models.
 
@@ -46,11 +23,12 @@ id=$CUDA_VISIBLE_DEVICES
 echo $CUDA_VISIBLE_DEVICES
 # Data
 #data_dir=data  # Local data directory (No disk space needed)
-sample_rate=22050
+sample_rate=44100
 n_src=2
 segment=220500
+
 # Training
-batch_size=3
+batch_size=1
 #num_workers=10
 optimizer=adam
 #lr=0.0005
@@ -68,7 +46,8 @@ sr_string=$(($sample_rate/1000))
 suffix=${n_inst}inst${n_poly}poly${sr_string}sr${segment}sec
 dumpdir=data/$suffix  # directory to put generated json file
 
-#json_dir=$dumpdir
+# Use line below if using pre-trained exp file
+#expdir=/data/home/acw497/workspace1/asteroid/egs/BBCSO/DPTNet/exp/train_convtasnet_BBCSO_new_2sep_7r_32f_4h_strings2_0005lr_96filters
 is_raw=True
 
 if [[ $stage -le  0 ]]; then
@@ -93,7 +72,7 @@ uuid=$($python_path -c 'import uuid, sys; print(str(uuid.uuid4())[:8])')
 if [[ -z ${tag} ]]; then
 	tag=${n_src}sep_${sr_string}k${mode}_${uuid}
 fi
-#expdir=/jmain01/home/JAD029/txl22/sxs01-txl22/workspace/asteroid/egs/BBCSO/DPTNet/exp/train_convtasnet_BBCSO_trial
+
 if [[ $stage -le 3 ]]; then
   echo "Stage 3: Training"
   expdir=exp/train_convtasnet_${tag}
@@ -103,7 +82,6 @@ if [[ $stage -le 3 ]]; then
   mkdir -p logs
   CUDA_VISIBLE_DEVICES=$id $python_path train.py \
 		--train_json $train_json \
-		--val_json $val_json \
 		--sample_rate $sample_rate \
 		--epochs $epochs \
 		--batch_size $batch_size \
