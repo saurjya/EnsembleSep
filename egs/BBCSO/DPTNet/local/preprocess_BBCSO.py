@@ -257,14 +257,14 @@ if __name__ == "__main__":
         "--inst_list",
         nargs="+",
         help="list of instruments",
-        #default=["Violin", "Viola", "Cello", "Bass 1", "Bass 2", "Bass 3", "Bass."],
-        default=["Violin", "Viola", "Flute", "Oboe", "Trumpet", "Clarinet", "French Horn", "Trombone"],
+        default=["Violin", "Viola", "Cello", "Bass"],
+        #default=["Violin", "Viola", "Flute", "Oboe", "Trumpet", "Clarinet", "French Horn", "Trombone"],
         #default=["Violin", "Viola"],
     )
     parser.add_argument(
         "--mix_list",         nargs="+",
         help="list of mixes",
-        default=["Mono"],
+        default=["Mix_1"],
     )
     parser.add_argument(
         "--json_path", type=str, default="/data/EECS-Sandler-Lab/BBCSO/all_t4_2src_train.json", help="Directory path for output json files"

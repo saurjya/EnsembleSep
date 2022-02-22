@@ -3,8 +3,10 @@ set -e  # Exit on error
 
 #if starting from stage 0
 # Destination to save json files with list of track locations for instrument sets
-train_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/train_strings5.json"
-test_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/test_strings5.json"
+train_json="./data/train/train.json"
+test_json="./data/test/test.json"
+test_data_path="./data/test/"
+train_data_path="./data/train/"
 
 # After running the recipe a first time, you can run it from stage 3 directly to train new models.
 
@@ -57,14 +59,14 @@ if [[ $stage -le  0 ]]; then
   fi
 
 if [[ $stage -le  1 ]]; then
-  echo "Stage 1: Download MedleyDB dataset, update dataset path, add custom tracklist if required"
+  echo "Stage 1: Download BBCSO, update dataset path"
 fi
 
 if [[ $stage -le  2 ]]; then
 	# Make json files with wav paths for instrument set
-	echo "Stage 2: Generating json files including wav path and activity info"
-  $python_path local/preprocess_medleyDB.py --metadata_path $metadata_dir --json_dir $json_dir --v1_path "$V1_dir" --v2_path "$V2_dir"
-
+	echo "Stage 2: Generating json files for test and train set"
+  $python_path local/preprocess_BBCSO.py --data_path $test_data_path --json_path $test_json
+  $python_path local/preprocess_BBCSO.py --data_path $train_data_path --json_path $train_json
 fi
 
 # Generate a random ID for the run if no tag is specified
