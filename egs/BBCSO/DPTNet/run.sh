@@ -5,6 +5,9 @@ set -e  # Exit on error
 # Destination to save json files with list of track locations for instrument sets
 train_json="./data/train/train.json"
 test_json="./data/test/test.json"
+
+# Path for datasets. Provide path which contains all the Mix folders.
+# Data
 test_data_path="./data/test/"
 train_data_path="./data/train/"
 
@@ -23,8 +26,8 @@ tag="BBCSO_new_2sep_6r_16f_strings"  # Controls the directory name associated to
 # You can ask for several GPUs using id (passed to CUDA_VISIBLE_DEVICES)
 id=$CUDA_VISIBLE_DEVICES
 echo $CUDA_VISIBLE_DEVICES
-# Data
-#data_dir=data  # Local data directory (No disk space needed)
+
+#quick settings
 sample_rate=44100
 n_src=2
 segment=220500
@@ -50,16 +53,14 @@ dumpdir=data/$suffix  # directory to put generated json file
 
 # Use line below if using pre-trained exp file
 #expdir=/data/home/acw497/workspace1/asteroid/egs/BBCSO/DPTNet/exp/train_convtasnet_BBCSO_new_2sep_7r_32f_4h_strings2_0005lr_96filters
-is_raw=True
+is_raw=True #to be utilised later to uncompress dataset
 
 if [[ $stage -le  0 ]]; then
-  echo "Stage 0 : Downloading MedleyDB repo for tracklist"
-  mkdir -p $metadata_dir
-  git clone https://github.com/marl/medleydb.git  $metadata_dir
+  echo "Stage 0 : Download BBCSO, update dataset path"
   fi
 
 if [[ $stage -le  1 ]]; then
-  echo "Stage 1: Download BBCSO, update dataset path"
+  echo "Stage 1: Unpack BBCSO for desired instruments and mixes"
 fi
 
 if [[ $stage -le  2 ]]; then
