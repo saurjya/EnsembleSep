@@ -20,12 +20,8 @@ class BBCSODataset(data.Dataset):
         self.n_src = n_src
         self.batch_size = batch_size
         self.train = train
-<<<<<<< HEAD
         #self.segment = int(segment)
         self.segment = 220500
-=======
-        self.segment = segment
->>>>>>> 4e00daa4c4da77bbee6c0109fa4e2c3611217e72
         
         
         with open(json_file, "r") as f:
@@ -44,11 +40,7 @@ class BBCSODataset(data.Dataset):
         source_arrays = []
         start = int(self.sources[idx][-1])
         stop = start + self.segment
-<<<<<<< HEAD
         for src in self.sources[idx][:self.n_src]:
-=======
-        for src in self.sources[idx][:-1]:
->>>>>>> 4e00daa4c4da77bbee6c0109fa4e2c3611217e72
             s, sr = sf.read(src, start=start, stop=stop, dtype="float32", always_2d=True)
             #s = np.zeros((self.segment,))
             s = s.mean(axis=1)
