@@ -250,40 +250,23 @@ if __name__ == "__main__":
     """
     parser = argparse.ArgumentParser("MedleyDB data preprocessing")
     parser.add_argument(
-<<<<<<< HEAD
         "--data_path", type=str, default="/bask/projects/v/vjgo8416-mus-sep/BBCSO/EnsembleSep/AUDIO/ENS", help="Directory path of BBCSO tracks"
-=======
-        "--data_path", type=str, default="/data/EECS-Sandler-Lab/BBCSO/New_Renders", help="Directory path of BBCSO tracks"
->>>>>>> 4e00daa4c4da77bbee6c0109fa4e2c3611217e72
     )
     
     parser.add_argument(
         "--inst_list",
         nargs="+",
         help="list of instruments",
-<<<<<<< HEAD
         #default=["Violin 1", "Violin 2", "Violin 3", "Cello", "Bass.", "Viola"],
         default=["Violin", "Viola","Cello"],
-=======
-        default=["Violin", "Viola", "Cello", "Bass"],
-        #default=["Violin", "Viola", "Flute", "Oboe", "Trumpet", "Clarinet", "French Horn", "Trombone"],
-        #default=["Violin", "Viola"],
->>>>>>> 4e00daa4c4da77bbee6c0109fa4e2c3611217e72
     )
     parser.add_argument(
         "--mix_list",         nargs="+",
         help="list of mixes",
-<<<<<<< HEAD
         default=["CloseW"],
     )
     parser.add_argument(
         "--json_path", type=str, default="/bask/projects/v/vjgo8416-mus-sep/Experiments/vvcFull_train.json", help="Directory path for output json files"
-=======
-        default=["Mix_1"],
-    )
-    parser.add_argument(
-        "--json_path", type=str, default="/data/EECS-Sandler-Lab/BBCSO/all_t4_2src_train.json", help="Directory path for output json files"
->>>>>>> 4e00daa4c4da77bbee6c0109fa4e2c3611217e72
     )
     parser.add_argument(
         "--segment", type=int, default=220500, help="Length of segments in seconds"

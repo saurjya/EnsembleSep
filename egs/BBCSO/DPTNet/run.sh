@@ -3,7 +3,6 @@ set -e  # Exit on error
 
 #if starting from stage 0
 # Destination to save json files with list of track locations for instrument sets
-<<<<<<< HEAD
 train_json="/bask/projects/v/vjgo8416-mus-sep/Experiments/vvcFull_train.json"
 val_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/val_mono.json"
 test_json="/bask/projects/v/vjgo8416-mus-sep/Experiments/str_lasaft_test.json"
@@ -28,10 +27,6 @@ extra_dir= # Directory containing additional MedleyDB format audio files
 # Location for evaluation multitrack sourceFolders
 #wav_dir=/jmain01/home/JAD007/txk02/sxs01-txk02/data/fix/split_2/tt/ # Directory containing MedleyDB github repository with metadata for all files
 
-=======
-train_json="./data/train/train.json"
-test_json="./data/test/test.json"
->>>>>>> 4e00daa4c4da77bbee6c0109fa4e2c3611217e72
 
 # Path for datasets. Provide path which contains all the Mix folders.
 # Data
@@ -48,7 +43,6 @@ python_path=python
 # ./run.sh --stage 3 --tag my_tag --loss_alpha 0.1 --id 0,1
 
 # General
-<<<<<<< HEAD
 stage=3  # Controls from which stage to start
 tag="RWC_str_2sep_44k_16l4h_64f"  # Controls the directory name associated to the experiment
 # You can ask for several GPUs using id (passed to CUDA_VISIBLE_DEVICES)
@@ -59,19 +53,6 @@ echo $CUDA_VISIBLE_DEVICES
 sample_rate=44100
 n_src=2
 segment=131072
-=======
-stage=2  # Controls from which stage to start
-tag="BBCSO_new_2sep_6r_16f_strings"  # Controls the directory name associated to the experiment
-# You can ask for several GPUs using id (passed to CUDA_VISIBLE_DEVICES)
-id=$CUDA_VISIBLE_DEVICES
-echo $CUDA_VISIBLE_DEVICES
-
-#quick settings
-sample_rate=44100
-n_src=2
-segment=220500
-
->>>>>>> 4e00daa4c4da77bbee6c0109fa4e2c3611217e72
 # Training
 batch_size=1
 #num_workers=10

@@ -59,13 +59,8 @@ class AugSystem(System):
 def main(conf):
     exp_dir = conf["main_args"]["exp_dir"]
     train_json = conf["main_args"]["train_json"]
-<<<<<<< HEAD
-    val_json = conf["main_args"]["val_json"]
-    n_src = conf["masknet"]["n_src"]
-=======
     #val_json = conf["main_args"]["val_json"]
-    n_src = conf["data"]["n_src"]
->>>>>>> 4e00daa4c4da77bbee6c0109fa4e2c3611217e72
+    n_src = conf["masknet"]["n_src"]
     
     # Define Dataloader
     total_set = BBCSODataset(

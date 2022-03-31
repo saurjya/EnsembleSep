@@ -1,11 +1,7 @@
 # Filterbank config
 filterbank:
   n_filters: 64
-<<<<<<< HEAD
   kernel_size: 32
-=======
-  kernel_size: 16
->>>>>>> 4e00daa4c4da77bbee6c0109fa4e2c3611217e72
   stride: 4
 # Network config
 masknet:
@@ -17,11 +13,7 @@ masknet:
   norm_type: "gLN"
   chunk_size: 332
   hop_size: 166
-<<<<<<< HEAD
   n_repeats: 5
-=======
-  n_repeats: 6
->>>>>>> 4e00daa4c4da77bbee6c0109fa4e2c3611217e72
   mask_act: 'sigmoid'
   bidirectional: true
   dropout: 0
@@ -45,7 +37,6 @@ scheduler:
 data:
   json_dir: data/inst2poly/wav44k
   validation_split: 0.1
-  n_src: 2
   task: sep_clean
   sample_rate: 44100
   segment: 220500
