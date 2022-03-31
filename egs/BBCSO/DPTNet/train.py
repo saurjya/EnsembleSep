@@ -27,7 +27,6 @@ from torch_audiomentations import Compose, Gain, ShuffleChannels
 parser = argparse.ArgumentParser()
 parser.add_argument("--exp_dir", default="exp/tmp", help="Full path to save best validation model")
 parser.add_argument("--train_json", default="exp/tmp", help="Full path to save best validation model")
-parser.add_argument("--val_json", default="exp/tmp", help="Full path to save best validation model")
 
 class AugSystem(System):
     def training_step(self, batch, batch_nb):
@@ -44,7 +43,7 @@ class AugSystem(System):
                 )
             ]
         )
-        batch = apply_augmentation(batch, sample_rate=22050)
+        batch = apply_augmentation(batch, sample_rate=conf["data"]["sample_rate"])
         loss = self.common_step(batch, batch_nb, train=True)
         self.log("loss", loss, logger=True)
         return loss    
@@ -60,8 +59,13 @@ class AugSystem(System):
 def main(conf):
     exp_dir = conf["main_args"]["exp_dir"]
     train_json = conf["main_args"]["train_json"]
+<<<<<<< HEAD
     val_json = conf["main_args"]["val_json"]
     n_src = conf["masknet"]["n_src"]
+=======
+    #val_json = conf["main_args"]["val_json"]
+    n_src = conf["data"]["n_src"]
+>>>>>>> 4e00daa4c4da77bbee6c0109fa4e2c3611217e72
     
     # Define Dataloader
     total_set = BBCSODataset(

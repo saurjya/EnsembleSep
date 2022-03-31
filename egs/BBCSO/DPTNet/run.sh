@@ -3,6 +3,7 @@ set -e  # Exit on error
 
 #if starting from stage 0
 # Destination to save json files with list of track locations for instrument sets
+<<<<<<< HEAD
 train_json="/bask/projects/v/vjgo8416-mus-sep/Experiments/vvcFull_train.json"
 val_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/val_mono.json"
 test_json="/bask/projects/v/vjgo8416-mus-sep/Experiments/str_lasaft_test.json"
@@ -27,7 +28,15 @@ extra_dir= # Directory containing additional MedleyDB format audio files
 # Location for evaluation multitrack sourceFolders
 #wav_dir=/jmain01/home/JAD007/txk02/sxs01-txk02/data/fix/split_2/tt/ # Directory containing MedleyDB github repository with metadata for all files
 
+=======
+train_json="./data/train/train.json"
+test_json="./data/test/test.json"
+>>>>>>> 4e00daa4c4da77bbee6c0109fa4e2c3611217e72
 
+# Path for datasets. Provide path which contains all the Mix folders.
+# Data
+test_data_path="./data/test/"
+train_data_path="./data/train/"
 
 # After running the recipe a first time, you can run it from stage 3 directly to train new models.
 
@@ -39,6 +48,7 @@ python_path=python
 # ./run.sh --stage 3 --tag my_tag --loss_alpha 0.1 --id 0,1
 
 # General
+<<<<<<< HEAD
 stage=3  # Controls from which stage to start
 tag="RWC_str_2sep_44k_16l4h_64f"  # Controls the directory name associated to the experiment
 # You can ask for several GPUs using id (passed to CUDA_VISIBLE_DEVICES)
@@ -49,6 +59,19 @@ echo $CUDA_VISIBLE_DEVICES
 sample_rate=44100
 n_src=2
 segment=131072
+=======
+stage=2  # Controls from which stage to start
+tag="BBCSO_new_2sep_6r_16f_strings"  # Controls the directory name associated to the experiment
+# You can ask for several GPUs using id (passed to CUDA_VISIBLE_DEVICES)
+id=$CUDA_VISIBLE_DEVICES
+echo $CUDA_VISIBLE_DEVICES
+
+#quick settings
+sample_rate=44100
+n_src=2
+segment=220500
+
+>>>>>>> 4e00daa4c4da77bbee6c0109fa4e2c3611217e72
 # Training
 batch_size=1
 #num_workers=10
@@ -68,24 +91,23 @@ sr_string=$(($sample_rate/1000))
 suffix=${n_inst}inst${n_poly}poly${sr_string}sr${segment}sec
 dumpdir=data/$suffix  # directory to put generated json file
 
-#json_dir=$dumpdir
-is_raw=True
+# Use line below if using pre-trained exp file
+#expdir=/data/home/acw497/workspace1/asteroid/egs/BBCSO/DPTNet/exp/train_convtasnet_BBCSO_new_2sep_7r_32f_4h_strings2_0005lr_96filters
+is_raw=True #to be utilised later to uncompress dataset
 
 if [[ $stage -le  0 ]]; then
-  echo "Stage 0 : Downloading MedleyDB repo for tracklist"
-  mkdir -p $metadata_dir
-  git clone https://github.com/marl/medleydb.git  $metadata_dir
+  echo "Stage 0 : Download BBCSO, update dataset path"
   fi
 
 if [[ $stage -le  1 ]]; then
-  echo "Stage 1: Download MedleyDB dataset, update dataset path, add custom tracklist if required"
+  echo "Stage 1: Unpack BBCSO for desired instruments and mixes"
 fi
 
 if [[ $stage -le  2 ]]; then
 	# Make json files with wav paths for instrument set
-	echo "Stage 2: Generating json files including wav path and activity info"
-  $python_path local/preprocess_medleyDB.py --metadata_path $metadata_dir --json_dir $json_dir --v1_path "$V1_dir" --v2_path "$V2_dir"
-
+	echo "Stage 2: Generating json files for test and train set"
+  $python_path local/preprocess_BBCSO.py --data_path $test_data_path --json_path $test_json
+  $python_path local/preprocess_BBCSO.py --data_path $train_data_path --json_path $train_json
 fi
 
 # Generate a random ID for the run if no tag is specified
@@ -93,7 +115,7 @@ uuid=$($python_path -c 'import uuid, sys; print(str(uuid.uuid4())[:8])')
 if [[ -z ${tag} ]]; then
 	tag=${n_src}sep_${sr_string}k${mode}_${uuid}
 fi
-#expdir=/jmain01/home/JAD029/txl22/sxs01-txl22/workspace/asteroid/egs/BBCSO/DPTNet/exp/train_convtasnet_BBCSO_trial
+
 if [[ $stage -le 3 ]]; then
   echo "Stage 3: Training"
   expdir=exp/train_convtasnet_${tag}
@@ -103,7 +125,6 @@ if [[ $stage -le 3 ]]; then
   mkdir -p logs
   CUDA_VISIBLE_DEVICES=$id $python_path train.py \
 		--train_json $train_json \
-		--val_json $val_json \
 		--sample_rate $sample_rate \
 		--epochs $epochs \
 		--batch_size $batch_size \
