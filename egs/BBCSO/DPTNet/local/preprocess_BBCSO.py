@@ -250,7 +250,7 @@ if __name__ == "__main__":
     """
     parser = argparse.ArgumentParser("MedleyDB data preprocessing")
     parser.add_argument(
-        "--data_path", type=str, default="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/Renders", help="Directory path of BBCSO tracks"
+        "--data_path", type=str, default="/bask/projects/v/vjgo8416-mus-sep/BBCSO/EnsembleSep/AUDIO/ENS", help="Directory path of BBCSO tracks"
     )
     
     parser.add_argument(
@@ -258,15 +258,15 @@ if __name__ == "__main__":
         nargs="+",
         help="list of instruments",
         #default=["Violin 1", "Violin 2", "Violin 3", "Cello", "Bass.", "Viola"],
-        default=["Violin", "Viola"],
+        default=["Violin", "Viola","Cello"],
     )
     parser.add_argument(
         "--mix_list",         nargs="+",
         help="list of mixes",
-        default=["Mono"],
+        default=["CloseW"],
     )
     parser.add_argument(
-        "--json_path", type=str, default="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/vv2m_train.json", help="Directory path for output json files"
+        "--json_path", type=str, default="/bask/projects/v/vjgo8416-mus-sep/Experiments/vvcFull_train.json", help="Directory path for output json files"
     )
     parser.add_argument(
         "--segment", type=int, default=220500, help="Length of segments in seconds"

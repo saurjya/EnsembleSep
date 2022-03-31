@@ -20,6 +20,7 @@ class BBCSODataset(data.Dataset):
         self.n_src = n_src
         self.batch_size = batch_size
         self.train = train
+        #self.segment = int(segment)
         self.segment = 220500
         
         
@@ -36,11 +37,10 @@ class BBCSODataset(data.Dataset):
         Returns:
             mixture, vstack([source_arrays])
         """
-        seg_len = 220500
         source_arrays = []
         start = int(self.sources[idx][-1])
-        stop = start + 220500
-        for src in self.sources[idx][:-1]:
+        stop = start + self.segment
+        for src in self.sources[idx][:self.n_src]:
             s, sr = sf.read(src, start=start, stop=stop, dtype="float32", always_2d=True)
             #s = np.zeros((seg_len,))
             s = s.mean(axis=1)

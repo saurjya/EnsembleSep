@@ -61,15 +61,15 @@ def main(conf):
     exp_dir = conf["main_args"]["exp_dir"]
     train_json = conf["main_args"]["train_json"]
     val_json = conf["main_args"]["val_json"]
-    n_src = 4
+    n_src = conf["masknet"]["n_src"]
     
     # Define Dataloader
     total_set = BBCSODataset(
         train_json,
-        n_src,
-        conf["data"]["sample_rate"],
-        conf["training"]["batch_size"],
-        conf["data"]["segment"],
+        n_src=n_src,
+        sample_rate=conf["data"]["sample_rate"],
+        batch_size=conf["training"]["batch_size"],
+        segment = conf["data"]["segment"],
         train = True
     )
     """

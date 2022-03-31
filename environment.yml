@@ -1,4 +1,4 @@
-name: asteroid2
+name: asteroid1
 channels:
   - anaconda
   - conda-forge
