@@ -3,9 +3,9 @@ set -e  # Exit on error
 
 #if starting from stage 0
 # Destination to save json files with list of track locations for instrument sets
-train_json="/bask/projects/v/vjgo8416-mus-sep/Experiments/vvcFull_train.json"
+train_json="/bask/projects/v/vjgo8416-mus-sep/Experiments/vvcFull_train_smol.json"
 val_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/val_mono.json"
-test_json="/bask/projects/v/vjgo8416-mus-sep/Experiments/str_lasaft_test.json"
+test_json="/bask/projects/v/vjgo8416-mus-sep/Experiments/URMP2_test.json"
 # Location for tracklist for all data dirs
 tracklist=  # Directory containing tracklists for V1, V2, Bach10 and others
 
@@ -44,7 +44,7 @@ python_path=python
 
 # General
 stage=3  # Controls from which stage to start
-tag="RWC_str_2sep_44k_16l4h_64f"  # Controls the directory name associated to the experiment
+tag="full_str_2sep_44k_32l4h_64f_3sec_9r_allmics"  # Controls the directory name associated to the experiment
 # You can ask for several GPUs using id (passed to CUDA_VISIBLE_DEVICES)
 id=$CUDA_VISIBLE_DEVICES
 echo $CUDA_VISIBLE_DEVICES
@@ -59,7 +59,7 @@ batch_size=1
 optimizer=adam
 #lr=0.0005
 #weight_decay=0.0
-epochs=10
+epochs=50
 #loss_alpha=1.0  # DC loss weight : 1.0 => DC, <1.0 => Chimera
 take_log=true  # Whether to input log mag spec to the NN
 

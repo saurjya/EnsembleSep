@@ -21,9 +21,12 @@ class BBCSODataset(data.Dataset):
         self.batch_size = batch_size
         self.train = train
         #self.segment = int(segment)
-        self.segment = 220500
-        
-        
+        self.segment = 131072
+        self.mixes = ['Amb','AtmosF','AtmosR','Balcony','Close','CloseW','Leader','Mids',
+            'Mix_1','Mix_2','Mono','Out','Sides','SpBr','SpFl','SpPer','SpStr','SpWW','Stereo','Tree']
+        #self.mixes = ['Close','CloseW','Leader','Mids',
+        #    'Mix_1','Mix_2','Mono','Stereo','Tree']
+
         with open(json_file, "r") as f:
             sources_infos = json.load(f)
         
@@ -41,6 +44,10 @@ class BBCSODataset(data.Dataset):
         start = int(self.sources[idx][-1])
         stop = start + self.segment
         for src in self.sources[idx][:self.n_src]:
+            split = src.split('/')
+            mix = random.choice(self.mixes)
+            split[-2] = mix
+            src = '/'.join(split)
             s, sr = sf.read(src, start=start, stop=stop, dtype="float32", always_2d=True)
             #s = np.zeros((self.segment,))
             s = s.mean(axis=1)

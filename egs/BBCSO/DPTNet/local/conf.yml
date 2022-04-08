@@ -11,9 +11,9 @@ masknet:
   ff_hid: 256
   ff_activation: "relu"
   norm_type: "gLN"
-  chunk_size: 332
-  hop_size: 166
-  n_repeats: 5
+  chunk_size: 256
+  hop_size: 128
+  n_repeats: 9
   mask_act: 'sigmoid'
   bidirectional: true
   dropout: 0
@@ -39,5 +39,5 @@ data:
   validation_split: 0.1
   task: sep_clean
   sample_rate: 44100
-  segment: 220500
+  segment: 131072
   threshold: 0.1

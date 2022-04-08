@@ -16,7 +16,7 @@ from asteroid.data.bbcso_dataset import BBCSODataset
 from asteroid.engine.optimizers import make_optimizer
 from asteroid.engine.system import System
 from asteroid.losses import PITLossWrapper, pairwise_neg_sisdr
-from torch_audiomentations import Compose, Gain, ShuffleChannels
+from torch_audiomentations import Compose, Gain, ShuffleChannels, PitchShift
 
 # Keys which are not in the conf.yml file can be added here.
 # In the hierarchical dictionary created when parsing, the key `key` can be
@@ -43,7 +43,7 @@ class AugSystem(System):
                 )
             ]
         )
-        batch = apply_augmentation(batch, sample_rate=conf["data"]["sample_rate"])
+        batch = apply_augmentation(batch, sample_rate=44100)
         loss = self.common_step(batch, batch_nb, train=True)
         self.log("loss", loss, logger=True)
         return loss    
