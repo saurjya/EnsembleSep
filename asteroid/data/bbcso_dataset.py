@@ -10,9 +10,18 @@ import torchaudio
 
 
 class BBCSODataset(data.Dataset):
+    """EnsembleSet Chamber Ensemble Separation Dataset
+    
+    This dataloader enables generating mixtures of N number of sources
+    from the EnsembleSet dataset for a given list of instrument tags. This dataloader
+    can be used to train PIT based separation models.
+    
+    The EnsembleSet dataset is hosted on Zenodo.
+    https://zenodo.org/record/6519024
+    """
     dataset_name = "BBCSO"
 
-    def __init__(self, json_file, n_src=4, sample_rate=22050, segment=220500, batch_size=1, train=False):
+    def __init__(self, json_file, n_src=4, sample_rate=22050, segment=220500, batch_size=1, train=False, val=False):
         super(BBCSODataset, self).__init__()
         # Task setting
         self.json_file = json_file
@@ -44,14 +53,14 @@ class BBCSODataset(data.Dataset):
         start = int(self.sources[idx][-1])
         stop = start + self.segment
         for src in self.sources[idx][:self.n_src]:
-            split = src.split('/')
-            mix = random.choice(self.mixes)
-            split[-2] = mix
-            src = '/'.join(split)
+            if self.train:
+                if not self.val:
+                    split = src.split('/')
+                    mix = random.choice(self.mixes)
+                    split[-2] = mix
+                    src = '/'.join(split)
             s, sr = sf.read(src, start=start, stop=stop, dtype="float32", always_2d=True)
-            #s = np.zeros((self.segment,))
             s = s.mean(axis=1)
-            #sr = 44100
             source_arrays.append(s)
         source = torch.from_numpy(np.vstack(source_arrays))
         
@@ -80,8 +89,8 @@ class BBCSODataset(data.Dataset):
 
 
 BBCSO_license = dict(
-    title="BBCSO-RWC Chamber Music Dataset: A Multitrack Dataset",
-    author="S. Sarkar, M. Pilataki, D. Foster, E. Benetos and M. B. Sandler",
+    title="EnsembleSet: A new high quality dataset for chamber ensemble separation",
+    author="S. Sarkar, E. Benetos and M. B. Sandler",
     license="Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License",
     license_link="https://creativecommons.org/licenses/by-nc-sa/4.0/",
     non_commercial=True,

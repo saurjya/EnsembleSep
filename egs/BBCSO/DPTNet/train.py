@@ -27,6 +27,8 @@ from torch_audiomentations import Compose, Gain, ShuffleChannels, PitchShift
 parser = argparse.ArgumentParser()
 parser.add_argument("--exp_dir", default="exp/tmp", help="Full path to save best validation model")
 parser.add_argument("--train_json", default="exp/tmp", help="Full path to save best validation model")
+parser.add_argument("--val_json", default="exp/tmp", help="Full path to save best validation model")
+
 
 class AugSystem(System):
     def training_step(self, batch, batch_nb):
@@ -40,7 +42,9 @@ class AugSystem(System):
                 ),
                 ShuffleChannels(
                     mode="per_example"
-                )
+                ),
+                PitchShift(min_transpose_semitones=-2, max_transpose_semitones=2, p=0.5, mode="per_example",sample_rate=44100),
+
             ]
         )
         batch = apply_augmentation(batch, sample_rate=44100)
@@ -59,10 +63,11 @@ class AugSystem(System):
 def main(conf):
     exp_dir = conf["main_args"]["exp_dir"]
     train_json = conf["main_args"]["train_json"]
-    #val_json = conf["main_args"]["val_json"]
+    val_json = conf["main_args"]["val_json"]
     n_src = conf["masknet"]["n_src"]
     
     # Define Dataloader
+    '''
     total_set = BBCSODataset(
         train_json,
         n_src=n_src,
@@ -71,15 +76,24 @@ def main(conf):
         segment = conf["data"]["segment"],
         train = True
     )
-    """
+    '''
+    train_set = BBCSODataset(
+        train_json,
+        n_src,
+        conf["data"]["sample_rate"],
+        conf["training"]["batch_size"],
+        train = True
+    )
+    
     val_set = BBCSODataset(
         val_json,
         n_src,
         conf["data"]["sample_rate"],
         conf["training"]["batch_size"],
-        train = True
-    )"""
-    train_set, val_set = torch.utils.data.random_split(total_set, [int(len(total_set)*0.9), len(total_set) - int(len(total_set)*0.9)])
+        train = True,
+        val = True
+    )
+    #train_set, val_set = torch.utils.data.random_split(total_set, [int(len(total_set)*0.9), len(total_set) - int(len(total_set)*0.9)])
     train_loader = data.DataLoader(
         train_set,
         shuffle=False,
@@ -161,7 +175,7 @@ def main(conf):
     system.cpu()
 
     to_save = system.model.serialize()
-    to_save.update(total_set.get_infos())
+    to_save.update(train_set.get_infos())
     torch.save(to_save, os.path.join(exp_dir, "best_model.pth"))
 
 

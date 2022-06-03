@@ -31,7 +31,7 @@ optim:
   lr: 0.0005
   weight_decay: !!float 1e-5
 scheduler:
-  steps_per_epoch: 8448
+  steps_per_epoch: 15964
   d_model: 64
 # Data config
 data:

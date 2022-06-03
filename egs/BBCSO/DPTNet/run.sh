@@ -3,9 +3,9 @@ set -e  # Exit on error
 
 #if starting from stage 0
 # Destination to save json files with list of track locations for instrument sets
-train_json="/bask/projects/v/vjgo8416-mus-sep/Experiments/vvcFull_train_smol.json"
-val_json="/jmain02/home/J2AD002/jxm06/sxs01-jxm06/data/BBCSO/val_mono.json"
-test_json="/bask/projects/v/vjgo8416-mus-sep/Experiments/URMP2_test.json"
+train_json="/bask/projects/v/vjgo8416-mus-sep/Experiments/BBCSO2_allinst_train_3sec.json"
+val_json="/bask/projects/v/vjgo8416-mus-sep/Experiments/URMP2_val_3sec.json"
+test_json="/bask/projects/v/vjgo8416-mus-sep/Experiments/URMP2_test_3sec.json"
 # Location for tracklist for all data dirs
 tracklist=  # Directory containing tracklists for V1, V2, Bach10 and others
 
@@ -44,7 +44,7 @@ python_path=python
 
 # General
 stage=3  # Controls from which stage to start
-tag="full_str_2sep_44k_32l4h_64f_3sec_9r_allmics"  # Controls the directory name associated to the experiment
+tag="full_all_2sep_44k_32l4h_64f_3sec_8r_pitchshft_allmics_urmpval"  # Controls the directory name associated to the experiment
 # You can ask for several GPUs using id (passed to CUDA_VISIBLE_DEVICES)
 id=$CUDA_VISIBLE_DEVICES
 echo $CUDA_VISIBLE_DEVICES
@@ -73,7 +73,7 @@ suffix=${n_inst}inst${n_poly}poly${sr_string}sr${segment}sec
 dumpdir=data/$suffix  # directory to put generated json file
 
 # Use line below if using pre-trained exp file
-#expdir=/data/home/acw497/workspace1/asteroid/egs/BBCSO/DPTNet/exp/train_convtasnet_BBCSO_new_2sep_7r_32f_4h_strings2_0005lr_96filters
+#expdir=/bask/projects/v/vjgo8416-mus-sep/Workspaces/Asteroid/ws2/asteroid/egs/BBCSO/DPTNet/exp/train_convtasnet_full_str_2sep_44k_16l4h_64f_3sec_8r
 is_raw=True #to be utilised later to uncompress dataset
 
 if [[ $stage -le  0 ]]; then
@@ -106,6 +106,7 @@ if [[ $stage -le 3 ]]; then
   mkdir -p logs
   CUDA_VISIBLE_DEVICES=$id $python_path train.py \
 		--train_json $train_json \
+		--val_json $val_json \
 		--sample_rate $sample_rate \
 		--epochs $epochs \
 		--batch_size $batch_size \
