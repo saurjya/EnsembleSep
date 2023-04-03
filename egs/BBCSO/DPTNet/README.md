@@ -3,7 +3,7 @@
 All the information regarding the dataset can be found in
 [zenodo](TBD).
 
-**References**
+
 If you use this dataset, please cite as follows : 
 
 ```BibTex
