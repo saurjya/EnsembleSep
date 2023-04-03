@@ -8,12 +8,11 @@ If you use this dataset, please cite as follows :
 Temporary placeholder below
 
 ```BibTex
-@inproceedings{sarkar21_interspeech,
-  author={Saurjya Sarkar and Emmanouil Benetos and Mark Sandler},
-  title={{Vocal Harmony Separation Using Time-Domain Neural Networks}},
-  year=2021,
-  booktitle={Proc. Interspeech 2021},
-  pages={3515--3519},
-  doi={10.21437/Interspeech.2021-1531}
+@inproceedings{sarkar2022ensembleset,
+  title={EnsembleSet: a new high quality synthesised dataset for chamber ensemble separation},
+  author={Sarkar, Saurjya and Benetos, Emmanouil and Sandler, Mark},
+  booktitle={Proc. of the 23rd International Society for Music Information Retrieval Conference (ISMIR)},
+  pages={625--632},
+  year={2022}
 }
 ```
